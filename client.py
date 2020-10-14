@@ -1,6 +1,7 @@
 import time
-from net import *
-from message import *
+import socket
+from net import Network
+from message import Message
 
 ip = input("Server: ")
 if ip == "":
