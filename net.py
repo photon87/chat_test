@@ -3,11 +3,11 @@ import pickle
 
 
 class Network:
-    def __init__(self):
+    def __init__(self, ip):
         self.HEADER = 64
         self.FORMAT = "utf-8"
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host = "192.168.2.10"
+        self.host = ip
         self.port = 9001
         self.addr = (self.host, self.port)
 

@@ -2,10 +2,12 @@ import time
 from net import *
 from message import *
 
+ip = socket.gethostbyname(socket.gethostname())
+
 name = input("Username: ")
 DISCONNECT_MSG = Message(name, "!DISCONNECT", time.time())
 
-n = Network()
+n = Network(ip)
 first = Message(name, "test", time.time())
 n.connect(first)
 
