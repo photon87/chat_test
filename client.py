@@ -2,7 +2,9 @@ import time
 from net import *
 from message import *
 
-ip = socket.gethostbyname(socket.gethostname())
+ip = input("Server: ")
+if ip == "":
+    ip = socket.gethostbyname(socket.gethostname())
 
 name = input("Username: ")
 DISCONNECT_MSG = Message(name, "!DISCONNECT", time.time())
