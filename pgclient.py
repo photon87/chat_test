@@ -19,7 +19,7 @@ BLUE = (0, 0, 255)
 DISCONNECT_MESSAGE = "!DISCONNECT"
 n = Network(socket.gethostbyname(socket.gethostname()))
 name = "PGCLIENT"
-first = Message(name, "CONNECTED", time.time())
+first = Message(name, "CONNECTED", "default", time.time())
 n.connect(first)
 
 
@@ -36,20 +36,18 @@ def main():
     def redraw_window():
         WIN.fill(BLACK)
 
-        fps_label = main_font.render(
-            f"FPS: {int(clock.get_fps())}", 1, WHITE)
+        fps_label = main_font.render(f"FPS: {int(clock.get_fps())}", 1, WHITE)
         WIN.blit(fps_label, (2, 2))
 
-        log_label = main_font.render(
-            f"S: {server_response}", 1, WHITE)
-        WIN.blit(log_label, (2, 30))
+        if server_response:
+            label = main_font.render(f"S: {server_response.get_message()}", 1, WHITE)
+            WIN.blit(label, (2, 26))
 
         pygame.display.flip()
 
-    def sends(msg):
-        m = Message(name, str(msg), time.time())
-        tttt = n.send(m)
-        print(type(tttt))
+    def send_msg(msg):
+        m = Message(name, str(msg), "default", time.time())
+        return n.send(m)
 
     while run:
         clock.tick(FPS)
@@ -58,11 +56,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                sends(DISCONNECT_MESSAGE)
+                send_msg(DISCONNECT_MESSAGE)
                 n.disconnect()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # send(pygame.mouse.get_pos())
-                sends(pygame.mouse.get_pos())
+                server_response=send_msg(pygame.mouse.get_pos())
+                
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:  # left

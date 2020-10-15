@@ -1,8 +1,9 @@
 class Message:
-    def __init__(self, client_name, message, time):
+    def __init__(self, client_name, msg, msg_type, time):
         #self.client_id = client_id
         self.client_name = client_name
-        self.message = message
+        self.message = msg
+        self.message_type = msg_type
         self.time = time
 
     def get_client_name(self):

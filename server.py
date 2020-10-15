@@ -1,7 +1,7 @@
 import socket
 import threading
 import pickle
-import message
+from message import Message
 import time
 
 HEADER = 64
@@ -10,11 +10,12 @@ SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
+TIME_FORMAT = '%b %d %Y %H:%M:%S'
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-log = []
+last_msg = None
 
 
 def handle_client(conn, addr):
@@ -40,11 +41,12 @@ def handle_client(conn, addr):
             msg = pickle.loads(msg)
             if msg.get_message() == DISCONNECT_MESSAGE:
                 connected = False
-            t = time.strftime('%b %d %Y %H:%M:%S',
-                              time.localtime(msg.get_time()))
+            t = time.strftime(TIME_FORMAT, time.localtime(msg.get_time()))
             print(f"[{t}] {msg.get_client_name()}: {msg.get_message()}")
-            log.append(msg)
-            send(log)
+            last_msg = msg
+            t = time.strftime(TIME_FORMAT, time.localtime(last_msg.get_time()))
+            response = Message("SERVER", f"last_msg received @ {t}", "default", time.time())
+            send(response)
             time.sleep(0.015)
     conn.close()
 
