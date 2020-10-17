@@ -12,5 +12,8 @@ class Message:
     def get_message(self):
         return self.message
 
+    def get_message_type(self):
+        return self.get_message_type
+
     def get_time(self):
         return self.time

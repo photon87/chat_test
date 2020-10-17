@@ -15,8 +15,6 @@ TIME_FORMAT = '%b %d %Y %H:%M:%S'
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(ADDR)
 
-last_msg = None
-
 
 def handle_client(conn, addr):
     print(f"[NEW CONNECTION] {addr} connected.")
@@ -41,11 +39,16 @@ def handle_client(conn, addr):
             msg = pickle.loads(msg)
             if msg.get_message() == DISCONNECT_MESSAGE:
                 connected = False
-            t = time.strftime(TIME_FORMAT, time.localtime(msg.get_time()))
-            print(f"[{t}] {msg.get_client_name()}: {msg.get_message()}")
+
+            if msg.get_message_type() == "default":
+                t = time.strftime(TIME_FORMAT, time.localtime(msg.get_time()))
+                print(f"[{t}] {msg.get_client_name()}: {msg.get_message()}")
+            elif msg.get_message_type() == "player":
+                pass
             last_msg = msg
             t = time.strftime(TIME_FORMAT, time.localtime(last_msg.get_time()))
-            response = Message("SERVER", f"last_msg received @ {t}", "default", time.time())
+            response = Message(
+                "SERVER", f"last_msg received @ {t}", "default", time.time())
             send(response)
             time.sleep(0.015)
     conn.close()
