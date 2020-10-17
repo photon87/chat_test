@@ -61,7 +61,7 @@ def main():
         redraw_window()
 
         p.update()
-        send_msg(p, "player")
+        #send_packet()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

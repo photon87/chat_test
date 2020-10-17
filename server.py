@@ -50,7 +50,7 @@ def handle_client(conn, addr):
             response = Message(
                 "SERVER", f"last_msg received @ {t}", "default", time.time())
             send(response)
-            time.sleep(0.015)
+            time.sleep(0.001)
     conn.close()
 
 

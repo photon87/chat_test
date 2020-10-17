@@ -18,6 +18,10 @@ class Pod:
         self.bullet_speed = 5
         self.bullets = []
 
+    def server_packet(self):
+        packet = {"pos":self.pos}
+        return packet
+
     def add_acl(self, force):
         self.acl += force
 
