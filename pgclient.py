@@ -3,7 +3,7 @@ import socket
 import pygame
 from net import Network
 from message import Message
-from pod import Pod
+#from pod import Pod
 from player import Player
 
 pygame.font.init()
@@ -23,6 +23,8 @@ n = Network(socket.gethostbyname(socket.gethostname()))
 name = "PGCLIENT"
 first = Message(name, "CONNECTED", "default", time.time())
 n.connect(first)
+
+last_message = None
 
 
 def main():
@@ -54,14 +56,14 @@ def main():
 
     def send_msg(msg, mtype="default"):
         m = Message(name, str(msg), mtype, time.time())
-        return n.send(m)
+        return n.send_t(m)
 
     while run:
         clock.tick(FPS)
         redraw_window()
 
         p.update()
-        #send_packet()
+        server_response = send_msg(p.server_packet(), "player")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

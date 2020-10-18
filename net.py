@@ -1,5 +1,6 @@
 import socket
 import pickle
+import threading
 
 
 class Network:
@@ -20,6 +21,10 @@ class Network:
     def disconnect(self):
         self.client.close()
 
+    def send_t(self, msg, pick=True):
+        thread = threading.Thread(target=self.send, args=(msg, pick))
+        thread.start()
+
     def send(self, msg, pick=True):
         if pick:
             message = pickle.dumps(msg)
@@ -35,4 +40,4 @@ class Network:
             msg_length = int(msg_length)
             msg = self.client.recv(msg_length)
             msg = pickle.loads(msg)
-        return msg
+        # return msg

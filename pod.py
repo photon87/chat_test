@@ -19,7 +19,7 @@ class Pod:
         self.bullets = []
 
     def server_packet(self):
-        packet = {"pos":self.pos}
+        packet = {"pos": {"x": self.pos.x, "y": self.pos.y}}
         return packet
 
     def add_acl(self, force):
